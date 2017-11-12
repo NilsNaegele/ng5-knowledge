@@ -16,10 +16,10 @@ import { AuthenticationService } from '../authentication.service';
                   alt="Google Logo">
             <mat-card-content>
             <p class="center">
-              Google is an engineering company that works and furthers Open Source development worldwide
+              Google is an engineering company that works and furthers Open Source Development worldwide
               for the benefit of humanity. Google is very strong with JavaScript, Java, C++ and a host of
-              other technologies it has developed. For example Angular, Android, V8, Chromium. Google is
-              a champion and champions Open Source Development for the progress of mankind.
+              other technologies it has developed. For example Angular, Android, V8, Chromium, Chromebooks.
+              Google is a champion and champions Open Source Development for the progress of mankind.
             </p>
             </mat-card-content>
             <mat-card-actions>
