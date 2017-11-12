@@ -29,6 +29,7 @@ import { AnimationsComponent } from './animations/animations.component';
 import { ChatComponent } from './chat/chat.component';
 
 import { AuthenticationService } from './authentication.service';
+import { AuthenticationGuardService } from './authentication-guard.service';
 
 
 @NgModule({
@@ -64,16 +65,22 @@ import { AuthenticationService } from './authentication.service';
       { path: 'animations', component: AnimationsComponent },
       { path: 'chat', component: ChatComponent },
       { path: 'shopping-cart', component: ShoppingCartComponent },
-      { path: 'check-out', component: CheckOutComponent },
-      { path: 'order-success', component: OrderSuccessComponent },
-      { path: 'my/orders', component: MyOrdersComponent },
       { path: 'login', component: LoginComponent },
-      { path: 'admin/books', component: AdminBooksComponent },
-      { path: 'admin/orders', component: AdminOrdersComponent },
+
+      { path: 'check-out', component: CheckOutComponent, canActivate: [ AuthenticationGuardService ] },
+      { path: 'order-success', component: OrderSuccessComponent, canActivate: [ AuthenticationGuardService ] },
+      { path: 'my/orders', component: MyOrdersComponent, canActivate: [ AuthenticationGuardService ] },
+
+      { path: 'admin/books', component: AdminBooksComponent, canActivate: [ AuthenticationGuardService ] },
+      { path: 'admin/orders', component: AdminOrdersComponent, canActivate: [ AuthenticationGuardService ] },
+
       { path: '**', component: HomeComponent }
     ])
   ],
-  providers: [ AuthenticationService ],
+  providers: [
+    AuthenticationService,
+    AuthenticationGuardService
+   ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }
