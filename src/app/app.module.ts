@@ -28,6 +28,8 @@ import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.componen
 import { AnimationsComponent } from './animations/animations.component';
 import { ChatComponent } from './chat/chat.component';
 
+import { AuthenticationService } from './authentication.service';
+
 
 @NgModule({
   declarations: [
@@ -71,7 +73,7 @@ import { ChatComponent } from './chat/chat.component';
       { path: '**', component: HomeComponent }
     ])
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [ AuthenticationService ],
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }

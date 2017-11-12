@@ -1,5 +1,7 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 
+import { AuthenticationService } from '../authentication.service';
+
 @Component({
   selector: 'app-navbar',
   template: `
@@ -30,18 +32,20 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
                <span routerLink="/shopping-cart">
                   <mat-icon>shopping_cart</mat-icon>
                </span>
+               <ng-template #anonymousUser>
                <span class="sample-spacer"></span>
                   <span routerLink="/login">
-                  <mat-icon>android</mat-icon>
-                </span>
+                    <mat-icon>android</mat-icon>
+                  </span>
+               </ng-template>
                 <span class="sample-spacer"></span>
-               <mat-form-field>
+               <mat-form-field *ngIf="authenticationService.user$ | async as user; else anonymousUser">
                     <mat-select [(value)]="selected">
-                          <mat-option routerLink="" value="YourName">YourName</mat-option>
+                          <mat-option routerLink="" value="YourName">{{ user.displayName }}</mat-option>
                           <mat-option routerLink="my/orders" value="My Orders">My Orders</mat-option>
                           <mat-option routerLink="admin/orders" value="Manage Orders">Manage Orders</mat-option>
                           <mat-option routerLink="admin/books" value="Manage Books">Manage Books</mat-option>
-                          <mat-option routerLink="/">Logout</mat-option>
+                          <mat-option (click)="logout()">Logout</mat-option>
                     </mat-select>
                </mat-form-field>
                <span class="sample-right"></span>
@@ -56,7 +60,7 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
         .mat-select-value { color: rgba(255,255,255,.87); }
         .sample-spacer { flex: 0.02 0.02 auto; }
         .sample-right { flex: 0.5 0.5 auto; }
-        span { cursor: pointer; }
+         span { cursor: pointer; }
     `],
   encapsulation: ViewEncapsulation.None
 })
@@ -64,4 +68,13 @@ export class NavbarComponent {
   @Input() sidenav;
   title = 'Angular 5 Knowledge';
   selected = 'YourName';
+
+  constructor(public authenticationService: AuthenticationService) {
+
+   }
+
+  logout() {
+    this.authenticationService.logout();
+  }
+
 }
