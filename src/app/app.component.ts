@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 
+import { AuthenticationService } from './authentication.service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +13,7 @@ import { Component } from '@angular/core';
               <app-sidenav></app-sidenav>
             </mat-sidenav>
               <div class="app-content">
-
                   <router-outlet></router-outlet>
-
               </div>
         </mat-sidenav-container>
   `,
@@ -24,7 +25,19 @@ import { Component } from '@angular/core';
     }
     `]
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
+  private userSubscription: Subscription;
 
+    constructor(private authenticationService: AuthenticationService, private router: Router) {
+      this.userSubscription = authenticationService.user$.subscribe(user => {
+                if (user) {
+                  const returnUrl = localStorage.getItem('returnUrl');
+                  router.navigateByUrl(returnUrl);
+                }
+        });
+    }
 
+    ngOnDestroy() {
+      this.userSubscription.unsubscribe();
+    }
 }
