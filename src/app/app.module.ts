@@ -27,11 +27,14 @@ import { AdminBooksComponent } from './admin/admin-books/admin-books.component';
 import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.component';
 import { AnimationsComponent } from './animations/animations.component';
 import { ChatComponent } from './chat/chat.component';
+import { BookFormComponent } from './admin/book-form/book-form.component';
 
 import { AuthenticationService } from './authentication.service';
 import { AuthenticationGuardService } from './authentication-guard.service';
 import { AdminAuthorizationGuardService } from './admin-authorization-guard.service';
 import { UserService } from './user.service';
+import { CategoryService } from './category.service';
+import { BookService } from './book.service';
 
 @NgModule({
   declarations: [
@@ -49,7 +52,8 @@ import { UserService } from './user.service';
     AdminBooksComponent,
     AdminOrdersComponent,
     AnimationsComponent,
-    ChatComponent
+    ChatComponent,
+    BookFormComponent
   ],
   imports: [
     BrowserModule,
@@ -75,11 +79,18 @@ import { UserService } from './user.service';
       {
         path: 'admin/books',
         component: AdminBooksComponent,
-        canActivate: [ AuthenticationGuardService, AdminAuthorizationGuardService ] },
+        canActivate: [ AuthenticationGuardService, AdminAuthorizationGuardService ]
+      },
+      {
+        path: 'admin/books/new',
+        component: BookFormComponent,
+        canActivate: [ AuthenticationGuardService, AdminAuthorizationGuardService ]
+      },
       {
         path: 'admin/orders',
         component: AdminOrdersComponent,
-        canActivate: [ AuthenticationGuardService, AdminAuthorizationGuardService ] },
+        canActivate: [ AuthenticationGuardService, AdminAuthorizationGuardService ]
+      },
 
       { path: '**', component: HomeComponent }
     ])
@@ -88,7 +99,9 @@ import { UserService } from './user.service';
     AuthenticationService,
     AuthenticationGuardService,
     AdminAuthorizationGuardService,
-    UserService
+    BookService,
+    UserService,
+    CategoryService
    ],
   bootstrap: [ AppComponent ]
 })
