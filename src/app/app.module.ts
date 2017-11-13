@@ -30,7 +30,8 @@ import { ChatComponent } from './chat/chat.component';
 
 import { AuthenticationService } from './authentication.service';
 import { AuthenticationGuardService } from './authentication-guard.service';
-
+import { AdminAuthorizationGuardService } from './admin-authorization-guard.service';
+import { UserService } from './user.service';
 
 @NgModule({
   declarations: [
@@ -71,15 +72,23 @@ import { AuthenticationGuardService } from './authentication-guard.service';
       { path: 'order-success', component: OrderSuccessComponent, canActivate: [ AuthenticationGuardService ] },
       { path: 'my/orders', component: MyOrdersComponent, canActivate: [ AuthenticationGuardService ] },
 
-      { path: 'admin/books', component: AdminBooksComponent, canActivate: [ AuthenticationGuardService ] },
-      { path: 'admin/orders', component: AdminOrdersComponent, canActivate: [ AuthenticationGuardService ] },
+      {
+        path: 'admin/books',
+        component: AdminBooksComponent,
+        canActivate: [ AuthenticationGuardService, AdminAuthorizationGuardService ] },
+      {
+        path: 'admin/orders',
+        component: AdminOrdersComponent,
+        canActivate: [ AuthenticationGuardService, AdminAuthorizationGuardService ] },
 
       { path: '**', component: HomeComponent }
     ])
   ],
   providers: [
     AuthenticationService,
-    AuthenticationGuardService
+    AuthenticationGuardService,
+    AdminAuthorizationGuardService,
+    UserService
    ],
   bootstrap: [ AppComponent ]
 })

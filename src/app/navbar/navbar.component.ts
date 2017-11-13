@@ -1,6 +1,8 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewEncapsulation, OnDestroy } from '@angular/core';
 
+import { User } from '../models/user';
 import { AuthenticationService } from '../authentication.service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-navbar',
@@ -39,12 +41,14 @@ import { AuthenticationService } from '../authentication.service';
                   </span>
                </ng-template>
                 <span class="sample-spacer"></span>
-               <mat-form-field *ngIf="authenticationService.user$ | async as user; else anonymousUser">
+               <mat-form-field *ngIf="user; else anonymousUser">
                     <mat-select [(value)]="selected">
-                          <mat-option routerLink="" value="YourName">{{ user.displayName }}</mat-option>
+                          <mat-option routerLink="" value="YourName">{{ user.name }}</mat-option>
                           <mat-option routerLink="my/orders" value="My Orders">My Orders</mat-option>
+                          <ng-container *ngIf="user.isAdmin">
                           <mat-option routerLink="admin/orders" value="Manage Orders">Manage Orders</mat-option>
                           <mat-option routerLink="admin/books" value="Manage Books">Manage Books</mat-option>
+                          </ng-container>
                           <mat-option (click)="logout()">Logout</mat-option>
                     </mat-select>
                </mat-form-field>
@@ -64,17 +68,23 @@ import { AuthenticationService } from '../authentication.service';
     `],
   encapsulation: ViewEncapsulation.None
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnDestroy {
   @Input() sidenav;
   title = 'Angular 5 Knowledge';
   selected = 'YourName';
+  user: User;
+  userSubscription: Subscription;
 
-  constructor(public authenticationService: AuthenticationService) {
-
+  constructor(private authenticationService: AuthenticationService) {
+    this.userSubscription = authenticationService.User$.subscribe(user => this.user = user);
    }
 
   logout() {
     this.authenticationService.logout();
+  }
+
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
   }
 
 }
