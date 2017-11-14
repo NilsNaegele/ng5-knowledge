@@ -64,7 +64,7 @@ import { CategoryService } from '../../category.service';
             <mat-card class="book-card" *ngIf="title.value">
                 <mat-card-header>
                   <mat-card-title>{{ title.value }}</mat-card-title>
-                  <mat-card-subtitle>{{ price.value | currency:'EU':true }}</mat-card-subtitle>
+                  <mat-card-subtitle>{{ price.value | currency:'EUR':'symbol' }}</mat-card-subtitle>
                 </mat-card-header>
                 <img mat-card-image style="height: 80%; width: 80%;" [src]="imageUrl.value">
                 <mat-card-content class="break-word">

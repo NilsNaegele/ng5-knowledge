@@ -12,12 +12,14 @@ import {
   MatInputModule,
   MatListModule,
   MatProgressBarModule,
+  MatProgressSpinnerModule,
   MatSelectModule,
   MatSidenavModule,
   MatSliderModule,
   MatSlideToggleModule,
   MatSnackBarModule,
   MatStepperModule,
+  MatTableModule,
   MatToolbarModule
 } from '@angular/material';
 
@@ -35,12 +37,14 @@ import {
     MatInputModule,
     MatListModule,
     MatProgressBarModule,
+    MatProgressSpinnerModule,
     MatSelectModule,
     MatSidenavModule,
     MatSliderModule,
     MatSlideToggleModule,
     MatSnackBarModule,
     MatStepperModule,
+    MatTableModule,
     MatToolbarModule
   ],
   exports: [
@@ -56,12 +60,14 @@ import {
     MatInputModule,
     MatListModule,
     MatProgressBarModule,
+    MatProgressSpinnerModule,
     MatSelectModule,
     MatSidenavModule,
     MatSliderModule,
     MatSlideToggleModule,
     MatSnackBarModule,
     MatStepperModule,
+    MatTableModule,
     MatToolbarModule
   ]
 })
