@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
-import {MatTableDataSource} from '@angular/material';
+import { MatTableDataSource } from '@angular/material';
 
 import { BookService } from '../../book.service';
-
+import { Book } from '../../models/book';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -13,6 +13,12 @@ import { Subscription } from 'rxjs/Subscription';
         </p>
 
         <div class="book-container mat-elevation-z8">
+        <div class="book-header">
+            <mat-form-field>
+              <input matInput (keyup)="applyFilter($event.target.value)"
+                     placeholder="Search ...">
+            </mat-form-field>
+        </div>
         <div class="container-loading-shade" *ngIf="isLoadingResults">
           <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
         </div>
@@ -20,10 +26,10 @@ import { Subscription } from 'rxjs/Subscription';
         <mat-table #table [dataSource]="dataSource">
 
           <!-- title Column -->
-            <ng-container matColumnDef="title">
-              <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
-              <mat-cell *matCellDef="let book"> {{ book.title }} </mat-cell>
-            </ng-container>
+        <ng-container matColumnDef="title">
+          <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
+          <mat-cell *matCellDef="let book"> {{ book.title }} </mat-cell>
+        </ng-container>
 
         <!-- Price Column -->
         <ng-container matColumnDef="price">
@@ -42,6 +48,7 @@ import { Subscription } from 'rxjs/Subscription';
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
+
 </div>
 
   `,
@@ -52,18 +59,32 @@ import { Subscription } from 'rxjs/Subscription';
         max-height: 500px;
         min-width: 300px;
       }
+      .book-header {
+        min-height: 64px;
+        padding: 8px 24px 0;
+      }
+      .mat-form-field {
+        font-size: 14px;
+        width: 60%;
+      }
       .mat-table {
         overflow: auto;
         max-height: 500px;
       }
     `],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.Emulated
 })
 export class AdminBooksComponent implements OnInit, OnDestroy {
   displayedColumns = ['title', 'price', ''];
-  dataSource: MatTableDataSource<any>;
+  dataSource: MatTableDataSource<Book>;
   isLoadingResults = false;
   booksSubscription: Subscription;
+
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim();
+    filterValue = filterValue.toLowerCase();
+    this.dataSource.filter = filterValue;
+  }
 
   constructor(private bookService: BookService) {
     this.isLoadingResults = true;
@@ -71,7 +92,7 @@ export class AdminBooksComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
    this.booksSubscription = this.bookService.getAllBooks().subscribe(books => {
-      this.dataSource = new MatTableDataSource<any>(books);
+      this.dataSource = new MatTableDataSource<Book>(books);
       this.isLoadingResults = false;
     });
   }

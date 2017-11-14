@@ -23,4 +23,16 @@ export class BookService {
    getAllBooks() {
      return this.books;
    }
+
+   getBookById(bookId) {
+     return this.books.map(books => books.filter(book => book.key === bookId));
+   }
+
+   updateBook(bookId: string, book) {
+     return this.booksRef.update(bookId, book);
+   }
+
+   delete(bookId: string) {
+     return this.booksRef.remove(bookId);
+   }
 }

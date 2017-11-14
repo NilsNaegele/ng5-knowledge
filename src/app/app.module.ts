@@ -78,13 +78,18 @@ import { BookService } from './book.service';
       { path: 'my/orders', component: MyOrdersComponent, canActivate: [ AuthenticationGuardService ] },
 
       {
-        path: 'admin/books',
-        component: AdminBooksComponent,
+        path: 'admin/books/new',
+        component: BookFormComponent,
         canActivate: [ AuthenticationGuardService, AdminAuthorizationGuardService ]
       },
       {
-        path: 'admin/books/new',
+        path: 'admin/books/:id',
         component: BookFormComponent,
+        canActivate: [ AuthenticationGuardService, AdminAuthorizationGuardService ]
+      },
+      {
+        path: 'admin/books',
+        component: AdminBooksComponent,
         canActivate: [ AuthenticationGuardService, AdminAuthorizationGuardService ]
       },
       {

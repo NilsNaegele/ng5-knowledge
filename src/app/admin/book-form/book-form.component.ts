@@ -1,18 +1,19 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { BookService } from '../../book.service';
 import { CategoryService } from '../../category.service';
 
+import 'rxjs/add/operator/take';
 
 @Component({
   selector: 'app-book-form',
   template: `
             <mat-grid-list cols="2">
-            <mat-grid-tile>
+            <mat-grid-tile *ngFor="let book of books">
             <form #bookForm="ngForm" (ngSubmit)="save(bookForm.value)" class="book-container">
               <mat-form-field>
-                  <input matInput #title="ngModel" ngModel name="title"
+                  <input matInput #title="ngModel" [(ngModel)]="book.title" name="title"
                          placeholder="Title" required>
                   <mat-error *ngIf="title.touched && title.invalid">
                     Title is <strong>required.</strong>
@@ -20,7 +21,7 @@ import { CategoryService } from '../../category.service';
               </mat-form-field>
               <mat-form-field>
                   <span matPrefix>€ &nbsp;</span>
-                  <input matInput #price="ngModel" ngModel name="price" type="number"
+                  <input matInput #price="ngModel" [(ngModel)]="book.price" name="price" type="number"
                          placeholder="Price" required [min]="0">
                   <mat-error *ngIf="price.touched && price.invalid">
                     <span *ngIf="price.errors.required">Price is <strong>required.</strong></span>
@@ -28,7 +29,7 @@ import { CategoryService } from '../../category.service';
                   </mat-error>
               </mat-form-field>
               <mat-form-field>
-                  <mat-select #category="ngModel" ngModel name="category"
+                  <mat-select #category="ngModel" [(ngModel)]="book.category" name="category"
                               placeholder="Categories" required>
                       <mat-option value=""></mat-option>
                       <mat-option
@@ -41,14 +42,14 @@ import { CategoryService } from '../../category.service';
                   </mat-error>
               </mat-form-field>
               <mat-form-field>
-                <textarea #description="ngModel" ngModel name="description"
+                <textarea #description="ngModel" [(ngModel)]="book.description" name="description"
                 matInput placeholder="Description" required></textarea>
                 <mat-error *ngIf="description.touched && description.invalid">
                   Description is <strong>required.</strong>
                 </mat-error>
               </mat-form-field>
               <mat-form-field>
-                  <input #imageUrl="ngModel" ngModel name="imageUrl" matInput
+                  <input #imageUrl="ngModel" [(ngModel)]="book.imageUrl" name="imageUrl" matInput
                           type="url" placeholder="Image URL" required url>
                 <mat-error *ngIf="imageUrl.touched && imageUrl.invalid">
                   <span *ngIf="imageUrl.errors.required">Image URL is <strong>invalid.</strong></span>
@@ -56,21 +57,25 @@ import { CategoryService } from '../../category.service';
                 </mat-error>
               </mat-form-field>
               <div>
-                <button mat-raised-button color="primary" [disabled]="!bookForm.form.valid">Save</button>
+                <button mat-raised-button color="primary"
+                [disabled]="!bookForm.form.valid">Save</button>
+                <button type="button" mat-raised-button color="warn" (click)="delete()"
+                [disabled]="!bookForm.form.valid">Delete</button>
               </div>
             </form>
             </mat-grid-tile>
             <mat-grid-tile>
-            <mat-card class="book-card" *ngIf="title.value">
+            <mat-card class="book-card" *ngFor="let book of books">
                 <mat-card-header>
-                  <mat-card-title>{{ title.value }}</mat-card-title>
-                  <mat-card-subtitle>{{ price.value | currency:'EUR':'symbol' }}</mat-card-subtitle>
+                  <mat-card-title>{{ book.title }}</mat-card-title>
+                  <mat-card-subtitle>{{ book.price | currency:'EUR':'symbol' }}</mat-card-subtitle>
                 </mat-card-header>
-                <img mat-card-image style="height: 80%; width: 80%;" [src]="imageUrl.value">
+                <img mat-card-image style="height: 80%; width: 80%;"
+                      [src]="book.imageUrl">
                 <mat-card-content class="break-word">
-                <p>{{ description.value }}</p>
+                <p class="hidden">{{ book.description }}</p>
                 </mat-card-content>
-                </mat-card>
+              </mat-card>
             </mat-grid-tile>
           </mat-grid-list>
   `,
@@ -95,26 +100,50 @@ import { CategoryService } from '../../category.service';
         .break-word {
           word-wrap: break-word;
         }
-
+        .hidden {
+          height: 100px;
+          overflow: scroll;
+        }
     `],
   encapsulation: ViewEncapsulation.None
 })
 export class BookFormComponent {
   categories$;
-
+  books = [{title: '', description: '', price: 0, category: '', imageUrl: ''}];
+  id = '';
   constructor(private router: Router,
+              private route: ActivatedRoute,
               private snackBar: MatSnackBar,
               private categoryService: CategoryService,
               private bookService: BookService) {
     this.categories$ = categoryService.getCategories();
+    this.id = route.snapshot.paramMap.get('id');
+    if (this.id) {
+        bookService.getBookById(this.id).take(1).subscribe(book => {
+        this.books = book;
+      });
+    }
+
   }
 
   save(book) {
     console.log(book);
-    // this.bookService.create(book);
-    this.snackBar.open(book.title, 'added', {
+    if (this.id) {
+      this.bookService.updateBook(this.id, book);
+    }
+    else {
+      this.bookService.create(book);
+    }
+    this.snackBar.open(book.title, 'processed', {
       duration: 2000
     });
+    this.router.navigate(['admin/books']);
+  }
+
+  delete() {
+    if (!confirm('Are you sure you want to delete this book?')) { return; }
+
+    this.bookService.delete(this.id);
     this.router.navigate(['admin/books']);
   }
 
