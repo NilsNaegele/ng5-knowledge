@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
-
+import { CustomFormsModule } from 'ng2-validation';
 
 import { environment } from '../environments/environment';
 import { AppMaterialModule } from './app.material.module';
@@ -59,6 +59,7 @@ import { BookService } from './book.service';
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    CustomFormsModule,
     AppMaterialModule,
     AngularFireAuthModule,
     AngularFireDatabaseModule,
