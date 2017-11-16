@@ -3,6 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
@@ -28,6 +29,7 @@ import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.componen
 import { AnimationsComponent } from './animations/animations.component';
 import { ChatComponent } from './chat/chat.component';
 import { BookFormComponent } from './admin/book-form/book-form.component';
+import { BookDetailComponent } from './book-detail/book-detail.component';
 
 import { AuthenticationService } from './authentication.service';
 import { AuthenticationGuardService } from './authentication-guard.service';
@@ -35,6 +37,10 @@ import { AdminAuthorizationGuardService } from './admin-authorization-guard.serv
 import { UserService } from './user.service';
 import { CategoryService } from './category.service';
 import { BookService } from './book.service';
+import { youTubeSearchInjectables } from './you-tube-search.injectable';
+import { SearchBoxComponent } from './search-box/search-box.component';
+import { SearchResultComponent } from './search-result/search-result.component';
+
 
 @NgModule({
   declarations: [
@@ -53,12 +59,16 @@ import { BookService } from './book.service';
     AdminOrdersComponent,
     AnimationsComponent,
     ChatComponent,
-    BookFormComponent
+    BookFormComponent,
+    BookDetailComponent,
+    SearchBoxComponent,
+    SearchResultComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    HttpClientModule,
     CustomFormsModule,
     AppMaterialModule,
     AngularFireAuthModule,
@@ -66,6 +76,7 @@ import { BookService } from './book.service';
     AngularFireModule.initializeApp(environment.firebase),
     RouterModule.forRoot([
       { path: '', component: HomeComponent },
+      { path: 'book/:id', component: BookDetailComponent },
       { path: 'books', component: BooksComponent },
       { path: 'about', component: AboutComponent },
       { path: 'animations', component: AnimationsComponent },
@@ -107,7 +118,8 @@ import { BookService } from './book.service';
     AdminAuthorizationGuardService,
     BookService,
     UserService,
-    CategoryService
+    CategoryService,
+    youTubeSearchInjectables
    ],
   bootstrap: [ AppComponent ]
 })

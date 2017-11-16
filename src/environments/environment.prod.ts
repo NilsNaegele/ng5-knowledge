@@ -7,5 +7,7 @@ export const environment = {
     projectId: 'ng5-books',
     storageBucket: 'ng5-books.appspot.com',
     messagingSenderId: '207316620392'
-  }
+  },
+   YOU_TUBE_API_KEY: 'AIzaSyDD3fnpwvr1ES-ZoWrB4z2dDLEiKbRyToI',
+   YOU_TUBE_API_URL: 'https://www.googleapis.com/youtube/v3/search'
 };
