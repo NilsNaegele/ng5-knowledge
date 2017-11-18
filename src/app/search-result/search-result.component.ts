@@ -29,7 +29,7 @@ import { SearchResult } from '../models/search-result';
       height: 560px;
       }
       .video-header-image {
-        background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+        background-image: url('https://images.emojiterra.com/emojione/v3/128px/1f61b.png');
         background-size: cover;
       }
     `],

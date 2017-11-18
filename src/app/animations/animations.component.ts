@@ -2,15 +2,15 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-animations',
-  templateUrl: './animations.component.html',
-  styleUrls: ['./animations.component.css'],
+  template: `
+        <h1>animations work</h1>
+  `,
+  styles: [`
+
+    `],
   encapsulation: ViewEncapsulation.None
 })
-export class AnimationsComponent implements OnInit {
+export class AnimationsComponent {
 
-  constructor() { }
-
-  ngOnInit() {
-  }
 
 }

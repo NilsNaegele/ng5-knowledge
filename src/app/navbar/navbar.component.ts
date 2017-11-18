@@ -19,7 +19,7 @@ import { Subscription } from 'rxjs/Subscription';
                   <mat-icon mat-list-icon>laptop_chromebook</mat-icon>
                </span>
                <span class="sample-spacer"></span>
-               <span routerLink="/about">
+               <span routerLink="/youtube">
                   <mat-icon mat-list-icon>info_outline</mat-icon>
                </span>
                <span class="sample-spacer"></span>

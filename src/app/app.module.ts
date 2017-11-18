@@ -30,6 +30,8 @@ import { AnimationsComponent } from './animations/animations.component';
 import { ChatComponent } from './chat/chat.component';
 import { BookFormComponent } from './admin/book-form/book-form.component';
 import { BookDetailComponent } from './book-detail/book-detail.component';
+import { SearchBoxComponent } from './search-box/search-box.component';
+import { SearchResultComponent } from './search-result/search-result.component';
 
 import { AuthenticationService } from './authentication.service';
 import { AuthenticationGuardService } from './authentication-guard.service';
@@ -38,8 +40,16 @@ import { UserService } from './user.service';
 import { CategoryService } from './category.service';
 import { BookService } from './book.service';
 import { youTubeSearchInjectables } from './you-tube-search.injectable';
-import { SearchBoxComponent } from './search-box/search-box.component';
-import { SearchResultComponent } from './search-result/search-result.component';
+
+import { AppState, default as reducer } from './app.reducer';
+import { AppStore, appStoreProviders } from './app.store';
+
+import { ChatNavBarComponent } from './chat-nav-bar/chat-nav-bar.component';
+import { ChatThreadsComponent } from './chat-threads/chat-threads.component';
+import { ChatThreadComponent } from './chat-thread/chat-thread.component';
+import { ChatWindowComponent } from './chat-window/chat-window.component';
+import { ChatMessageComponent } from './chat-message/chat-message.component';
+import { FromNowPipe } from './from-now.pipe';
 
 
 @NgModule({
@@ -62,7 +72,14 @@ import { SearchResultComponent } from './search-result/search-result.component';
     BookFormComponent,
     BookDetailComponent,
     SearchBoxComponent,
-    SearchResultComponent
+    SearchResultComponent,
+    ChatThreadsComponent,
+    ChatThreadComponent,
+    ChatWindowComponent,
+    ChatMessageComponent,
+    FromNowPipe,
+    ChatNavBarComponent
+
   ],
   imports: [
     BrowserModule,
@@ -78,7 +95,7 @@ import { SearchResultComponent } from './search-result/search-result.component';
       { path: '', component: HomeComponent },
       { path: 'book/:id', component: BookDetailComponent },
       { path: 'books', component: BooksComponent },
-      { path: 'about', component: AboutComponent },
+      { path: 'youtube', component: AboutComponent },
       { path: 'animations', component: AnimationsComponent },
       { path: 'chat', component: ChatComponent },
       { path: 'shopping-cart', component: ShoppingCartComponent },
@@ -119,7 +136,8 @@ import { SearchResultComponent } from './search-result/search-result.component';
     BookService,
     UserService,
     CategoryService,
-    youTubeSearchInjectables
+    youTubeSearchInjectables,
+    appStoreProviders
    ],
   bootstrap: [ AppComponent ]
 })
